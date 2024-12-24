@@ -10,6 +10,9 @@ https://github.com/MetaMask/metamask-extension/releases/tag/v12.9.3
 npm install
 ```
 
+Добавить данные от аккаунтов в mnemonics.txt и прокси в proxy.txt по примерам в файлах
+
+
 ```js
 npm start
 ```
