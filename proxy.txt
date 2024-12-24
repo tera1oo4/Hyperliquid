@@ -1,4 +1,0 @@
-http://example3.com:10080@user3:pass3
-http://example3.com:10080@user3:pass3
-http://example3.com:10080@user3:pass3
-http://example3.com:10080@user3:pass3
