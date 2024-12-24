@@ -1,0 +1,16 @@
+{
+	"name": "jetscapital",
+	"version": "1.0.0",
+	"main": "faucetHL.js",
+	"scripts": {
+		"start": "node faucetHL.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"type": "module",
+	"dependencies": {
+		"fs": "^0.0.1-security"
+	}
+}
