@@ -30,13 +30,13 @@ async function depositHyperliquid(
     channel: "chromium",
     headless: false,
     ignoreHTTPSErrors: true,
-    // proxy: {
-    //   server: `${proxyServer}`, //host:port
-    //   username: `${proxyUsername}`, //username
-    //   password: `${proxyPassword}`, // password
-    // },
+    proxy: {
+      server: `${proxyServer}`, //host:port
+      username: `${proxyUsername}`, //username
+      password: `${proxyPassword}`, // password
+    },
     args: [
-      // `--headless=new`,
+      `--headless=new`,
       `--disable-extensions-except=${pathToExtension}`,
       `--load-extension=${pathToExtension}`,
     ],
