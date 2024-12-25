@@ -30,13 +30,13 @@ async function depositHyperliquid(
     channel: "chromium",
     headless: false,
     ignoreHTTPSErrors: true,
-    proxy: {
-      server: `${proxyServer}`, //host:port
-      username: `${proxyUsername}`, //username
-      password: `${proxyPassword}`, // password
-    },
+    // proxy: {
+    //   server: `${proxyServer}`, //host:port
+    //   username: `${proxyUsername}`, //username
+    //   password: `${proxyPassword}`, // password
+    // },
     args: [
-      `--headless=new`,
+      // `--headless=new`,
       `--disable-extensions-except=${pathToExtension}`,
       `--load-extension=${pathToExtension}`,
     ],
@@ -199,10 +199,6 @@ async function depositHyperliquid(
       timeout: 35000,
     });
 
-    await HyperLiquidPage.pause(3500);
-
-    await HyperLiquidPage.pause();
-
     try {
       await HyperLiquidPage.locator(
         "xpath=//button[text()='Establish Connection']"
@@ -228,9 +224,56 @@ async function depositHyperliquid(
     } catch (err) {
       console.log(err);
     }
-
+    await wait(2000);
     await pageMM.reload();
     await wait(2000);
+
+    //change fee
+
+    try{
+      await wait(3500);
+
+    await pageMM
+      .locator("xpath=//button[@data-testid='edit-gas-fee-icon']")
+      .click();
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//button[@data-testid='edit-gas-fee-item-custom']")
+      .click();
+
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='base-fee-input']")
+      .fill('30');
+
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='priority-fee-input']")
+      .fill('30');
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//a[@data-testid='advanced-gas-fee-edit']")
+      .click();
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='gas-limit-input']")
+      .fill('150000');
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//button[@class='button btn--rounded btn-primary']")
+      .click();
+    }
+    catch(err){
+      console.log("Ошибка в измненение газа :", err);
+
+    }
+    await wait(3500);
 
     await pageMM
       .locator("xpath=//button[@data-testid='confirm-footer-button']")
@@ -250,9 +293,9 @@ export async function Deposit() {
       console.log(`Аккаунт [${i}] запущен`);
       await depositHyperliquid(
         mnemonics[i],
-        proxy[i].proxyServer,
-        proxy[i].proxyUsername,
-        proxy[i].proxyPassword,
+        // proxy[i].proxyServer,
+        // proxy[i].proxyUsername,
+        // proxy[i].proxyPassword,
         i
       );
     } catch (err) {
