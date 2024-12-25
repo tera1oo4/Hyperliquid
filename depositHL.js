@@ -30,13 +30,13 @@ async function depositHyperliquid(
     channel: "chromium",
     headless: false,
     ignoreHTTPSErrors: true,
-    proxy: {
-      server: `${proxyServer}`, //host:port
-      username: `${proxyUsername}`, //username
-      password: `${proxyPassword}`, // password
-    },
+    // proxy: {
+    //   server: `${proxyServer}`, //host:port
+    //   username: `${proxyUsername}`, //username
+      // password: `${proxyPassword}`, // password
+    // },
     args: [
-      `--headless=new`,
+      // `--headless=new`,
       `--disable-extensions-except=${pathToExtension}`,
       `--load-extension=${pathToExtension}`,
     ],
@@ -224,10 +224,33 @@ async function depositHyperliquid(
     } catch (err) {
       console.log(err);
     }
+    
+    try {
+      await wait(2000);
+
+      await HyperLiquidPage.locator(
+        "xpath=//button[text()='Switch to Arbitrum Sepolia to Deposit']"
+      ).click();
+      await wait(2000);
+      await pageMM.reload();
+        await wait(2000);
+        await pageMM
+          .locator("xpath=//button[@data-testid='confirmation-submit-button']")
+          .click();
+    } catch (error) { 
+    }
+
+    
+    try{
+      await wait(2000);
+      await HyperLiquidPage.locator(
+        "xpath=//*[@id='root']/div[3]/div/div[2]/div[2]/div/button"
+      ).click();
+    } catch{
+    await wait(2000);
+    await pageMM.reload();}
     await wait(2000);
     await pageMM.reload();
-    await wait(2000);
-
     //change fee
 
     try{
@@ -270,8 +293,6 @@ async function depositHyperliquid(
       .click();
     }
     catch(err){
-      console.log("Ошибка в измненение газа :", err);
-
     }
     await wait(3500);
 
