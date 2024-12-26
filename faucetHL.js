@@ -25,6 +25,10 @@ async function faucetHyperliquid(
 ) {
   let password = "11111111";
   const pathToExtension = path.join(__dirname, "Metamask");
+  const basicFee = '30';
+  const priorityFee = '30';
+  const gasLimit = '150000';
+
   const browser = await chromium.launchPersistentContext("", {
     channel: "chromium",
     headless: false,
@@ -201,8 +205,52 @@ async function faucetHyperliquid(
     } catch (err) {
       console.log(err);
     }
+    await wait(2000);
 
     await pageMM.reload();
+     //change fee
+
+     try{
+      await wait(3500);
+
+    await pageMM
+      .locator("xpath=//button[@data-testid='edit-gas-fee-icon']")
+      .click();
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//button[@data-testid='edit-gas-fee-item-custom']")
+      .click();
+
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='base-fee-input']")
+      .fill(basicFee);
+
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='priority-fee-input']")
+      .fill(priorityFee);
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//a[@data-testid='advanced-gas-fee-edit']")
+      .click();
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='gas-limit-input']")
+      .fill(gasLimit);
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//button[@class='button btn--rounded btn-primary']")
+      .click();
+    }
+    catch(err){
+    }
     await wait(2000);
 
     await pageMM
@@ -210,6 +258,7 @@ async function faucetHyperliquid(
       .click();
     await wait(1500);
     console.log(`Аккаунт  [${i}] завершен`);
+    await browser.close();
   } catch (error) {
     console.log(error);
     await browser.close();
@@ -220,7 +269,7 @@ export async function Faucet() {
   let i = 0;
   for (i; i < mnemonics.length; i++) {
     try {
-      console.log(`Аккаунт [${i}] запущен`);
+      console.log(`Аккаунт [${i}] запущен`);      
       await faucetHyperliquid(
         mnemonics[i],
         proxy[i].proxyServer,
@@ -231,6 +280,7 @@ export async function Faucet() {
     } catch (err) {
       console.error(`Ошибка на аккаунте [${i}]:`, err);
     }
-    console.log(`Все аккаунты завершены ${i}/${mnemonics.length}`);
   }
+  console.log(`Все аккаунты завершены ${i}/${mnemonics.length}`);
+
 }

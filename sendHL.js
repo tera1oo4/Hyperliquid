@@ -27,6 +27,10 @@ async function sendHyperliquid(
 ) {
   let password = "11111111";
   const pathToExtension = path.join(__dirname, "Metamask");
+  const basicFee = '30'
+  const priorityFee = '30'
+  const gasLimit = '150000'
+  
   const browser = await chromium.launchPersistentContext("", {
     channel: "chromium",
     headless: false,
@@ -253,6 +257,49 @@ async function sendHyperliquid(
     await wait(2000);
 
     await pageMM.reload();
+     //change fee
+
+     try{
+      await wait(3500);
+
+    await pageMM
+      .locator("xpath=//button[@data-testid='edit-gas-fee-icon']")
+      .click();
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//button[@data-testid='edit-gas-fee-item-custom']")
+      .click();
+
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='base-fee-input']")
+      .fill(basicFee);
+
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='priority-fee-input']")
+      .fill(priorityFee);
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//a[@data-testid='advanced-gas-fee-edit']")
+      .click();
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//input[@data-testid='gas-limit-input']")
+      .fill(gasLimit);
+      await wait(3500);
+
+      await pageMM
+      .locator("xpath=//button[@class='button btn--rounded btn-primary']")
+      .click();
+    }
+    catch(err){
+    }
     await wait(2000);
 
     await pageMM

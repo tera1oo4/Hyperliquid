@@ -26,17 +26,21 @@ async function depositHyperliquid(
 ) {
   let password = "11111111";
   const pathToExtension = path.join(__dirname, "Metamask");
+  const basicFee = '30'
+  const priorityFee = '30'
+  const gasLimit = '150000'
+
   const browser = await chromium.launchPersistentContext("", {
     channel: "chromium",
     headless: false,
     ignoreHTTPSErrors: true,
-    // proxy: {
-    //   server: `${proxyServer}`, //host:port
-    //   username: `${proxyUsername}`, //username
-      // password: `${proxyPassword}`, // password
-    // },
+    proxy: {
+      server: `${proxyServer}`, //host:port
+      username: `${proxyUsername}`, //username
+      password: `${proxyPassword}`, // password
+    },
     args: [
-      // `--headless=new`,
+      `--headless=new`,
       `--disable-extensions-except=${pathToExtension}`,
       `--load-extension=${pathToExtension}`,
     ],
@@ -269,13 +273,13 @@ async function depositHyperliquid(
 
       await pageMM
       .locator("xpath=//input[@data-testid='base-fee-input']")
-      .fill('30');
+      .fill(basicFee);
 
       await wait(3500);
 
       await pageMM
       .locator("xpath=//input[@data-testid='priority-fee-input']")
-      .fill('30');
+      .fill(priorityFee);
       await wait(3500);
 
       await pageMM
@@ -285,7 +289,7 @@ async function depositHyperliquid(
 
       await pageMM
       .locator("xpath=//input[@data-testid='gas-limit-input']")
-      .fill('150000');
+      .fill(gasLimit);
       await wait(3500);
 
       await pageMM
@@ -301,6 +305,7 @@ async function depositHyperliquid(
       .click();
     await wait(1500);
     console.log(`Аккаунт  [${i}] завершен`);
+    await browser.close();
   } catch (error) {
     console.log(error);
     await browser.close();
@@ -314,9 +319,9 @@ export async function Deposit() {
       console.log(`Аккаунт [${i}] запущен`);
       await depositHyperliquid(
         mnemonics[i],
-        // proxy[i].proxyServer,
-        // proxy[i].proxyUsername,
-        // proxy[i].proxyPassword,
+        proxy[i].proxyServer,
+        proxy[i].proxyUsername,
+        proxy[i].proxyPassword,
         i
       );
     } catch (err) {
