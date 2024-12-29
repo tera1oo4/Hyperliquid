@@ -1,6 +1,7 @@
 import { chromium } from "playwright";
 import { readWallets, readProxy } from "./common/readFiles.js";
 import path from "path";
+import cron from 'node-crontab';  
 
 function wait(ms) {
   return new Promise((resolve, reject) => {
@@ -284,3 +285,8 @@ export async function Faucet() {
   console.log(`Все аккаунты завершены ${i}/${mnemonics.length}`);
 
 }
+
+const cronJob = cron.scheduleJob('0 */4 * * *', async function() {
+  console.log('Запуск задачи каждые 4 часа...');
+  await Faucet();  // Запускаем вашу основную функцию Faucet
+});
